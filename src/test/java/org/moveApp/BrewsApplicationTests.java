@@ -1,4 +1,4 @@
-package org.moveApp.brews;
+package org.moveApp;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
