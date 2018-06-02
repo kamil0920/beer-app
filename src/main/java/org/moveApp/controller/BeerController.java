@@ -2,6 +2,7 @@ package org.moveApp.controller;
 
 
 import org.moveApp.domain.DataBeer;
+import org.moveApp.dto.DataBeerDto;
 import org.moveApp.service.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,8 +35,8 @@ public class BeerController {
     }
 
     @PostMapping("/beers")
-    public ResponseEntity<DataBeer> addBeer(@RequestBody DataBeer data){
-        DataBeer ticket = beerService.creatBeer(data);
+    public ResponseEntity<DataBeer> addBeer(@RequestBody DataBeerDto data){
+        DataBeer ticket = beerService.createBeer(data);
 
         return new ResponseEntity<DataBeer>(ticket, HttpStatus.CREATED);
     }
