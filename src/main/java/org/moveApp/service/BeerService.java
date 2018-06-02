@@ -1,6 +1,7 @@
 package org.moveApp.service;
 
 import org.moveApp.domain.DataBeer;
+import org.moveApp.dto.DataBeerDto;
 
 import java.util.List;
 
@@ -10,5 +11,5 @@ public interface BeerService {
 
     List<DataBeer> findBeerByPhrase(String phrase);
 
-    DataBeer creatBeer(DataBeer data);
+    DataBeer createBeer(DataBeerDto data);
 }

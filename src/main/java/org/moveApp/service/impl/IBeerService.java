@@ -1,9 +1,9 @@
 package org.moveApp.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.moveApp.convert.ConverBeerToBeerDto;
 import org.moveApp.domain.DataBeer;
 import org.moveApp.dto.DataBeerDto;
-import org.moveApp.exception.BeerExistException;
 import org.moveApp.exception.NotFoundBeerException;
 import org.moveApp.repository.BeerRepository;
 import org.moveApp.service.BeerService;
@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class IBeerService implements BeerService {
 
@@ -71,27 +72,20 @@ public class IBeerService implements BeerService {
     }
 
     @Override
-    public DataBeer creatBeer(DataBeer data) {
-        Optional<DataBeer> beerOptional = beerRepository.findById(Long.valueOf(data.getPunkapiId()));
+    public DataBeer createBeer(DataBeerDto data) {
+        Optional<DataBeer> beerOptional = beerRepository.findByPunkapiId(data.getId());
 
         if (!beerOptional.isPresent()){
-            DataBeer dataBeer = new DataBeer();
-
-            dataBeer.setPunkapiId(data.getPunkapiId());
-            dataBeer.setTagline(data.getTagline());
-            dataBeer.setFoodPairing(data.getFoodPairing());
-            dataBeer.setImageUrl(data.getImageUrl());
-            dataBeer.setFirstBrewed(data.getFirstBrewed());
-            dataBeer.setDescription(data.getDescription());
-            dataBeer.setIbu(data.getIbu());
-            dataBeer.setName(data.getName());
+            DataBeer dataBeer = convertDataDtoToData.convert(data);
 
             beerRepository.save(dataBeer);
+
+            log.info("Beer with id: " + dataBeer.getPunkapiId() + " was created.");
 
             return dataBeer;
 
         } else {
-            throw new BeerExistException();
+            throw new RuntimeException("Beer exist");
         }
     }
 }
