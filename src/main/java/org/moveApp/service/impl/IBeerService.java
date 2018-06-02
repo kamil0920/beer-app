@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.moveApp.convert.ConverBeerToBeerDto;
 import org.moveApp.domain.DataBeer;
 import org.moveApp.dto.DataBeerDto;
-import org.moveApp.exception.NotFoundBeerException;
+import org.moveApp.exception.ResourceNotFound;
 import org.moveApp.repository.BeerRepository;
 import org.moveApp.service.BeerService;
 import org.moveApp.service.DataLoad;
@@ -41,8 +41,9 @@ public class IBeerService implements BeerService {
         for (DataBeerDto beer : listBeerDto) {
             DataBeer beerData = convertDataDtoToData.convert(beer);
             listBeers.add(beerData);
-            beerRepository.save(beerData);
         }
+
+        beerRepository.saveAll(listBeers);
 
         return listBeers;
     }
@@ -51,31 +52,36 @@ public class IBeerService implements BeerService {
     public List<DataBeer> findBeerByPhrase(String phrase) {
         Optional<Iterable<DataBeer>> optionalDataBeers = Optional.of(beerRepository.findAll());
 
-        if (optionalDataBeers.isPresent()) {
-            List<DataBeer> dataBeers = (List<DataBeer>) optionalDataBeers.get();
+        List<DataBeer> dataBeers = (List<DataBeer>) optionalDataBeers.get();
 
-            List<DataBeer> beersWithPhrase = new LinkedList<>();
+        if (dataBeers.isEmpty()){
+            throw new ResourceNotFound();
+        }
 
-            for (DataBeer dataB : dataBeers) {
-                List<String> s = dataB.getFoodPairing();
+        List<DataBeer> beersWithPhrase = new LinkedList<>();
 
-                for (String str : s) {
-                    if (str.contains(phrase)) {
-                        beersWithPhrase.add(dataB);
-                    }
+        for (DataBeer dataB : dataBeers) {
+            List<String> s = dataB.getFoodPairing();
+
+            for (String str : s) {
+                if (str.contains(phrase)) {
+                    beersWithPhrase.add(dataB);
                 }
             }
-            return beersWithPhrase;
-        } else {
-            throw new NotFoundBeerException();
         }
+
+        if (beersWithPhrase.isEmpty()) {
+            throw new ResourceNotFound();
+        }
+
+        return beersWithPhrase;
     }
 
     @Override
     public DataBeer createBeer(DataBeerDto data) {
         Optional<DataBeer> beerOptional = beerRepository.findByPunkapiId(data.getId());
 
-        if (!beerOptional.isPresent()){
+        if (!beerOptional.isPresent()) {
             DataBeer dataBeer = convertDataDtoToData.convert(data);
 
             beerRepository.save(dataBeer);
