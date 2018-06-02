@@ -3,6 +3,8 @@ package org.moveApp.service.impl;
 import org.moveApp.convert.ConverBeerToBeerDto;
 import org.moveApp.domain.DataBeer;
 import org.moveApp.dto.DataBeerDto;
+import org.moveApp.exception.BeerExistException;
+import org.moveApp.exception.NotFoundBeerException;
 import org.moveApp.repository.BeerRepository;
 import org.moveApp.service.BeerService;
 import org.moveApp.service.DataLoad;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IBeerService implements BeerService {
@@ -34,7 +37,7 @@ public class IBeerService implements BeerService {
         List<DataBeerDto> listBeerDto = dataLoad.getBeers();
         List<DataBeer> listBeers = new LinkedList<>();
 
-        for (DataBeerDto beer : listBeerDto){
+        for (DataBeerDto beer : listBeerDto) {
             DataBeer beerData = convertDataDtoToData.convert(beer);
             listBeers.add(beerData);
             beerRepository.save(beerData);
@@ -45,20 +48,50 @@ public class IBeerService implements BeerService {
 
     @Override
     public List<DataBeer> findBeerByPhrase(String phrase) {
-        List<DataBeer> dataBeers = (List<DataBeer>) beerRepository.findAll();
+        Optional<Iterable<DataBeer>> optionalDataBeers = Optional.of(beerRepository.findAll());
 
-        List<DataBeer> beersWithPhrase = new LinkedList<>();
+        if (optionalDataBeers.isPresent()) {
+            List<DataBeer> dataBeers = (List<DataBeer>) optionalDataBeers.get();
 
-        for (DataBeer dataB : dataBeers){
-            List<String> s = dataB.getFoodPairing();
+            List<DataBeer> beersWithPhrase = new LinkedList<>();
 
-            for (String str : s){
-                if (str.contains(phrase)){
-                    beersWithPhrase.add(dataB);
+            for (DataBeer dataB : dataBeers) {
+                List<String> s = dataB.getFoodPairing();
+
+                for (String str : s) {
+                    if (str.contains(phrase)) {
+                        beersWithPhrase.add(dataB);
+                    }
                 }
             }
+            return beersWithPhrase;
+        } else {
+            throw new NotFoundBeerException();
         }
+    }
 
-        return beersWithPhrase;
+    @Override
+    public DataBeer creatBeer(DataBeer data) {
+        Optional<DataBeer> beerOptional = beerRepository.findById(Long.valueOf(data.getPunkapiId()));
+
+        if (!beerOptional.isPresent()){
+            DataBeer dataBeer = new DataBeer();
+
+            dataBeer.setPunkapiId(data.getPunkapiId());
+            dataBeer.setTagline(data.getTagline());
+            dataBeer.setFoodPairing(data.getFoodPairing());
+            dataBeer.setImageUrl(data.getImageUrl());
+            dataBeer.setFirstBrewed(data.getFirstBrewed());
+            dataBeer.setDescription(data.getDescription());
+            dataBeer.setIbu(data.getIbu());
+            dataBeer.setName(data.getName());
+
+            beerRepository.save(dataBeer);
+
+            return dataBeer;
+
+        } else {
+            throw new BeerExistException();
+        }
     }
 }

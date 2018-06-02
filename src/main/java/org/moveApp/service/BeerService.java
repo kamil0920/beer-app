@@ -9,4 +9,6 @@ public interface BeerService {
     List<DataBeer> getAllBeers();
 
     List<DataBeer> findBeerByPhrase(String phrase);
+
+    DataBeer creatBeer(DataBeer data);
 }
