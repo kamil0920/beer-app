@@ -6,9 +6,7 @@ import org.moveApp.service.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +31,12 @@ public class BeerController {
         List<DataBeer> beerData = beerService.findBeerByPhrase(phrase);
 
         return new ResponseEntity<List<DataBeer>>(beerData, HttpStatus.OK);
+    }
+
+    @PostMapping("/beers")
+    public ResponseEntity<DataBeer> addBeer(@RequestBody DataBeer data){
+        DataBeer ticket = beerService.creatBeer(data);
+
+        return new ResponseEntity<DataBeer>(ticket, HttpStatus.CREATED);
     }
 }
