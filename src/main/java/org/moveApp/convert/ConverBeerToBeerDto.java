@@ -6,22 +6,22 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ConverBeerToBeerDto implements Converter<DataBeerDto, DataBeer> {
+public class ConverBeerToBeerDto implements Converter<DataBeer, DataBeerDto> {
 
     @Override
-    public DataBeer convert(DataBeerDto dataBeerDto) {
+    public DataBeerDto convert(DataBeer dataBeer) {
 
-        final DataBeer beerData = new DataBeer();
+        DataBeerDto dataBeerDto = new DataBeerDto();
 
-        beerData.setPunkapiId(dataBeerDto.getId());
-        beerData.setName(dataBeerDto.getName());
-        beerData.setDescription(dataBeerDto.getDescription());
-        beerData.setFirstBrewed(dataBeerDto.getFirstBrewed());
-        beerData.setIbu(dataBeerDto.getIbu());
-        beerData.setImageUrl(dataBeerDto.getImageUrl());
-        beerData.setTagline(dataBeerDto.getTagline());
-        beerData.setFoodPairing(dataBeerDto.getFoodPairing());
+        dataBeerDto.setId(dataBeer.getPunkapiId());
+        dataBeerDto.setName(dataBeer.getName());
+        dataBeerDto.setDescription(dataBeer.getDescription());
+        dataBeerDto.setFirstBrewed(dataBeer.getFirstBrewed());
+        dataBeerDto.setIbu(dataBeer.getIbu());
+        dataBeerDto.setImageUrl(dataBeer.getImageUrl());
+        dataBeerDto.setTagline(dataBeer.getTagline());
+        dataBeerDto.setFoodPairing(dataBeer.getFoodPairing());
 
-        return beerData;
+        return dataBeerDto;
     }
 }
