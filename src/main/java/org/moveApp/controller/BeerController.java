@@ -35,9 +35,9 @@ public class BeerController {
     }
 
     @PostMapping("/beers")
-    public ResponseEntity<DataBeer> addBeer(@RequestBody DataBeerDto data){
-        DataBeer ticket = beerService.createBeer(data);
+    @ResponseStatus(HttpStatus.CREATED)
+    public DataBeerDto addBeer(@RequestBody DataBeerDto beerDto){
+        return beerService.createBeer(beerDto);
 
-        return new ResponseEntity<DataBeer>(ticket, HttpStatus.CREATED);
     }
 }
