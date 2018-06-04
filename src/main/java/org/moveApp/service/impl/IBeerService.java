@@ -2,6 +2,7 @@ package org.moveApp.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.moveApp.convert.ConverBeerToBeerDto;
+import org.moveApp.convert.ConvertBeerDtoToBeer;
 import org.moveApp.domain.DataBeer;
 import org.moveApp.dto.DataBeerDto;
 import org.moveApp.exception.ResourceNotFound;
@@ -20,15 +21,23 @@ import java.util.Optional;
 public class IBeerService implements BeerService {
 
     private final DataLoad dataLoad;
-    private final ConverBeerToBeerDto convertDataDtoToData;
+    private final ConverBeerToBeerDto converBeerToBeerDto;
+    private final ConvertBeerDtoToBeer convertBeerDtoToBeer;
 
+    @Autowired
     private final BeerRepository beerRepository;
 
     @Autowired
-    public IBeerService(DataLoad dataLoad, ConverBeerToBeerDto convertDataDtoToData, BeerRepository beerRepository) {
+    public IBeerService(DataLoad dataLoad,
+                        ConverBeerToBeerDto converBeerToBeerDto,
+                        ConvertBeerDtoToBeer convertBeerDtoToBeer,
+                        BeerRepository beerRepository) {
+
         this.dataLoad = dataLoad;
-        this.convertDataDtoToData = convertDataDtoToData;
+        this.converBeerToBeerDto = converBeerToBeerDto;
+        this.convertBeerDtoToBeer = convertBeerDtoToBeer;
         this.beerRepository = beerRepository;
+
     }
 
 
@@ -39,7 +48,7 @@ public class IBeerService implements BeerService {
         List<DataBeer> listBeers = new LinkedList<>();
 
         for (DataBeerDto beer : listBeerDto) {
-            DataBeer beerData = convertDataDtoToData.convert(beer);
+            DataBeer beerData = convertBeerDtoToBeer.convert(beer);
             listBeers.add(beerData);
         }
 
@@ -56,7 +65,7 @@ public class IBeerService implements BeerService {
 
         List<DataBeer> dataBeers = (List<DataBeer>) beerRepository.findAll();
 
-        if (dataBeers.isEmpty()){
+        if (dataBeers.isEmpty()) {
             throw new ResourceNotFound();
         }
 
@@ -81,10 +90,11 @@ public class IBeerService implements BeerService {
 
     @Override
     public DataBeer createBeer(DataBeerDto data) {
+//        ??
         Optional<DataBeer> beerOptional = beerRepository.findByPunkapiId(data.getId());
 
         if (!beerOptional.isPresent()) {
-            DataBeer dataBeer = convertDataDtoToData.convert(data);
+            DataBeer dataBeer = convertBeerDtoToBeer.convert(data);
 
             beerRepository.save(dataBeer);
 
