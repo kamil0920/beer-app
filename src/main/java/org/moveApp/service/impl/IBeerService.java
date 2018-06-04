@@ -24,7 +24,6 @@ public class IBeerService implements BeerService {
     private final ConverBeerToBeerDto converBeerToBeerDto;
     private final ConvertBeerDtoToBeer convertBeerDtoToBeer;
 
-    @Autowired
     private final BeerRepository beerRepository;
 
     @Autowired
@@ -89,18 +88,20 @@ public class IBeerService implements BeerService {
     }
 
     @Override
-    public DataBeer createBeer(DataBeerDto data) {
+    public DataBeerDto createBeer(DataBeerDto data) {
 //        ??
         Optional<DataBeer> beerOptional = beerRepository.findByPunkapiId(data.getId());
 
         if (!beerOptional.isPresent()) {
             DataBeer dataBeer = convertBeerDtoToBeer.convert(data);
 
-            beerRepository.save(dataBeer);
+            DataBeer savedDataBeer = beerRepository.save(dataBeer);
+
+            DataBeerDto returnedDto = converBeerToBeerDto.convert(savedDataBeer);
 
             log.info("Beer with id: " + dataBeer.getPunkapiId() + " was created.");
 
-            return dataBeer;
+            return returnedDto;
 
         } else {
             throw new RuntimeException("Beer exist");

@@ -11,5 +11,5 @@ public interface BeerService {
 
     List<DataBeer> findBeerByPhrase(String phrase);
 
-    DataBeer createBeer(DataBeerDto data);
+    DataBeerDto createBeer(DataBeerDto data);
 }
