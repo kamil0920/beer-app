@@ -58,9 +58,6 @@ public class IBeerService implements BeerService {
 
     @Override
     public List<DataBeer> findBeerByPhrase(String phrase) {
-//        Optional<Iterable<DataBeer>> optionalDataBeers = Optional.of(beerRepository.findAll());
-
-//        List<DataBeer> dataBeers = (List<DataBeer>) optionalDataBeers.get();
 
         List<DataBeer> dataBeers = (List<DataBeer>) beerRepository.findAll();
 
