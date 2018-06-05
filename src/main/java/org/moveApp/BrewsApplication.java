@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableScheduling
 public class BrewsApplication extends SpringBootServletInitializer {
 
-    @SuppressWarnings("resource")
+
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(BrewsApplication.class, args);
 
