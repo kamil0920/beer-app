@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-@Table(name = "beers")
+@Table
 @Data
 public class DataBeer {
 
