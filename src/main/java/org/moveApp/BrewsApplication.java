@@ -20,8 +20,6 @@ public class BrewsApplication extends SpringBootServletInitializer {
         ConfigurableApplicationContext context = SpringApplication.run(BrewsApplication.class, args);
 
         context.getBean(IBeerService.class).getAllBeers();
-
-
     }
 
 }
