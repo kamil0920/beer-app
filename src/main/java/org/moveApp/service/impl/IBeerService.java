@@ -59,49 +59,52 @@ public class IBeerService implements BeerService {
     @Override
     public List<DataBeer> findBeerByPhrase(String phrase) {
 
-        List<DataBeer> dataBeers = (List<DataBeer>) beerRepository.findAll();
+        Optional<List<DataBeer>> list = beerRepository.findByFoodPairingPhrase(phrase);
 
-        if (dataBeers.isEmpty()) {
+        if (!list.isPresent()){
             throw new ResourceNotFound();
+        } else {
+            return list.get();
         }
 
-        List<DataBeer> beersWithPhrase = new LinkedList<>();
 
-        for (DataBeer dataB : dataBeers) {
-            List<String> s = dataB.getFoodPairing();
-
-            for (String str : s) {
-                if (str.contains(phrase)) {
-                    beersWithPhrase.add(dataB);
-                }
-            }
-        }
-
-        if (beersWithPhrase.isEmpty()) {
-            throw new ResourceNotFound();
-        }
-
-        return beersWithPhrase;
+//        List<DataBeer> dataBeers = (List<DataBeer>) beerRepository.findAll();
+//
+//
+//        // select * from beers where food_pairing.name like %phrase%
+//
+//        if (dataBeers.isEmpty()) {
+//            throw new ResourceNotFound();
+//        }
+//
+//        List<DataBeer> beersWithPhrase = new LinkedList<>();
+//
+//        for (DataBeer dataB : dataBeers) {
+//            List<String> s = dataB.getFoodPairing();
+//
+//            for (String str : s) {
+//                if (str.contains(phrase)) {
+//                    beersWithPhrase.add(dataB);
+//                }
+//            }
+//        }
+//
+//        if (beersWithPhrase.isEmpty()) {
+//            throw new ResourceNotFound();
+//        }
+//
+//        return beersWithPhrase;
     }
 
     @Override
     public DataBeerDto createBeer(DataBeerDto data) {
-//        ??
-        Optional<DataBeer> beerOptional = beerRepository.findByPunkapiId(data.getId());
 
-        if (!beerOptional.isPresent()) {
             DataBeer dataBeer = convertBeerDtoToBeer.convert(data);
-
             DataBeer savedDataBeer = beerRepository.save(dataBeer);
-
             DataBeerDto returnedDto = converBeerToBeerDto.convert(savedDataBeer);
 
             log.info("Beer with id: " + dataBeer.getPunkapiId() + " was created.");
 
             return returnedDto;
-
-        } else {
-            throw new RuntimeException("Beer exist");
-        }
     }
 }
