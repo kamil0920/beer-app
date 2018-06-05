@@ -15,6 +15,10 @@ public interface BeerRepository extends CrudRepository<DataBeer, Long> {
 
     Optional<DataBeer> findByPunkapiId(Integer id);
 
+
     @Query("select b from DataBeer b join b.foodPairing fp where fp like %:phrase%")
     Optional<List<DataBeer>> findByFoodPairingPhrase(@Param("phrase") String phrase);
+
+//    @Query("select b from DataBeer b join b.foodPairing fp where lower(fp) like lower(%:phrase%)")
+
 }
