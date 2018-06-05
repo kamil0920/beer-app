@@ -61,50 +61,22 @@ public class IBeerService implements BeerService {
 
         Optional<List<DataBeer>> list = beerRepository.findByFoodPairingPhrase(phrase);
 
-        if (!list.isPresent()){
+        if (!list.isPresent()) {
             throw new ResourceNotFound();
         } else {
             return list.get();
         }
-
-
-//        List<DataBeer> dataBeers = (List<DataBeer>) beerRepository.findAll();
-//
-//
-//        // select * from beers where food_pairing.name like %phrase%
-//
-//        if (dataBeers.isEmpty()) {
-//            throw new ResourceNotFound();
-//        }
-//
-//        List<DataBeer> beersWithPhrase = new LinkedList<>();
-//
-//        for (DataBeer dataB : dataBeers) {
-//            List<String> s = dataB.getFoodPairing();
-//
-//            for (String str : s) {
-//                if (str.contains(phrase)) {
-//                    beersWithPhrase.add(dataB);
-//                }
-//            }
-//        }
-//
-//        if (beersWithPhrase.isEmpty()) {
-//            throw new ResourceNotFound();
-//        }
-//
-//        return beersWithPhrase;
     }
 
     @Override
     public DataBeerDto createBeer(DataBeerDto data) {
 
-            DataBeer dataBeer = convertBeerDtoToBeer.convert(data);
-            DataBeer savedDataBeer = beerRepository.save(dataBeer);
-            DataBeerDto returnedDto = converBeerToBeerDto.convert(savedDataBeer);
+        DataBeer dataBeer = convertBeerDtoToBeer.convert(data);
+        DataBeer savedDataBeer = beerRepository.save(dataBeer);
+        DataBeerDto returnedDto = converBeerToBeerDto.convert(savedDataBeer);
 
-            log.info("Beer with id: " + dataBeer.getPunkapiId() + " was created.");
+        log.info("Beer with id: " + dataBeer.getPunkapiId() + " was created.");
 
-            return returnedDto;
+        return returnedDto;
     }
 }
