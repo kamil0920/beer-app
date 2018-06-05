@@ -19,5 +19,4 @@ public interface BeerRepository extends CrudRepository<DataBeer, Long> {
     @Query("select b from DataBeer b join b.foodPairing fp where lower(fp) like lower(concat('%', :phrase, '%'))")
     Optional<List<DataBeer>> findByFoodPairingPhrase(@Param("phrase") String phrase);
 
-
 }
