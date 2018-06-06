@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -17,7 +17,7 @@ public class BrewsApplication extends SpringBootServletInitializer {
 
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(BrewsApplication.class, args);
+        ApplicationContext context = SpringApplication.run(BrewsApplication.class, args);
 
         context.getBean(IBeerService.class).getAllBeers();
     }
