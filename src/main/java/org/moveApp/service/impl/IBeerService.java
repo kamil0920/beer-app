@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +45,6 @@ public class IBeerService implements BeerService {
     public List<DataBeer> getAllBeers() {
 
         List<DataBeerDto> listBeerDto = dataLoad.getBeers();
-        List<DataBeer> savedBeers = new LinkedList<>();
 
         for (DataBeerDto beer : listBeerDto) {
             DataBeer beerData = convertBeerDtoToBeer.convert(beer);
@@ -54,7 +52,6 @@ public class IBeerService implements BeerService {
             List<DataBeer> dataBeerOptional = beerRepository.findAll();
 
             if (!dataBeerOptional.contains(beerData)) {
-                savedBeers.add(beerData);
                 beerRepository.save(beerData);
             }
 
