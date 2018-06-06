@@ -1,3 +1,3 @@
 #!/bin/bash
-clear
+mvn clean install
 java -jar ./classes/artifacts/brews_jar/brews.jar
