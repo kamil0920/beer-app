@@ -1,6 +1,7 @@
 package org.moveApp.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -13,7 +14,7 @@ public class DataBeer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer punkapiId;
+    @EqualsAndHashCode.Exclude private Integer punkapiId;
 
     @Column
     private String name;
@@ -32,6 +33,7 @@ public class DataBeer {
 
     @Column
     private Float ibu;
+
 
     @Column(name = "food_pairing")
     @ElementCollection(targetClass=String.class)
