@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,7 +38,7 @@ import java.util.List;
 public class DataBeerDto {
 
     @JsonProperty("id")
-    private Integer id;
+    @EqualsAndHashCode.Exclude private Integer id;
     @JsonProperty("name")
     private String name;
     @JsonProperty("tagline")
