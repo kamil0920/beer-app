@@ -11,6 +11,7 @@ import org.moveApp.service.BeerService;
 import org.moveApp.service.DataLoad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,21 +41,27 @@ public class IBeerService implements BeerService {
     }
 
 
+    @Transactional
     @Override
     public List<DataBeer> getAllBeers() {
 
         List<DataBeerDto> listBeerDto = dataLoad.getBeers();
-        List<DataBeer> listBeers = new LinkedList<>();
+        List<DataBeer> savedBeers = new LinkedList<>();
 
         for (DataBeerDto beer : listBeerDto) {
             DataBeer beerData = convertBeerDtoToBeer.convert(beer);
-            listBeers.add(beerData);
+
+            List<DataBeer> dataBeerOptional = beerRepository.findAll();
+
+            if (!dataBeerOptional.contains(beerData)) {
+                savedBeers.add(beerData);
+                beerRepository.save(beerData);
+            }
+
         }
-
-        beerRepository.saveAll(listBeers);
-
-        return listBeers;
+        return beerRepository.findAll();
     }
+
 
     @Override
     public List<DataBeer> findBeerByPhrase(String phrase) {

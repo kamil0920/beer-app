@@ -21,12 +21,12 @@ public class IDataLoad implements DataLoad {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<List<DataBeerDto>> rateResponse =
+        ResponseEntity<List<DataBeerDto>> responseEntity =
                 restTemplate.exchange(url,
                         HttpMethod.GET, null, new ParameterizedTypeReference<List<DataBeerDto>>() {
                         });
 
-        List<DataBeerDto> rates = rateResponse.getBody();
+        List<DataBeerDto> rates = responseEntity.getBody();
 
         return rates;
 
