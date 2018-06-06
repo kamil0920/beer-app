@@ -6,7 +6,7 @@
 	<groupId>org.moveApp</groupId>
 	<artifactId>brews</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 
 	<name>brews</name>
 	<description>Demo project for Spring Boot</description>
@@ -34,7 +34,6 @@
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 
-
 		<!-- database -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -52,6 +51,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.16.22</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -68,14 +68,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.0.2.RELEASE</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>
